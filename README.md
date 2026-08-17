@@ -14,6 +14,9 @@ house price data from five Brisbane suburbs.
 - Check for duplicate records
 - Inspect suburb categories
 - Inspect demand categories
+- Calculate the median house price
+- Calculate the lowest and highest house prices
+- Calculate the percentages of houses below and above the median price
 
 ## Dataset
 
@@ -37,6 +40,21 @@ The demand categories in the supplied dataset are:
 - `General`
 - `High`
 
+
+## Statistical Analysis
+
+The application calculates the following statistics from the supplied
+house price dataset:
+
+- Median house price
+- Lowest house price
+- Highest house price
+- Percentage of houses priced below the median
+- Percentage of houses priced above the median
+
+The values are calculated dynamically from the CSV dataset rather than
+being hard-coded in the program.
+
 ## Project Structure
 
 ```text
@@ -49,3 +67,4 @@ coit29225-a1-house-price-analysis/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+```
