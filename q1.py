@@ -15,12 +15,15 @@ The program will:
 - Export the sorted house price dataset.
 - Generate a technical PDF report.
 """
+from pathlib import Path
 
 import pandas as pd
-
+import matplotlib.pyplot as plt
+from matplotlib.ticker import StrMethodFormatter
 
 # Path to the supplied house price dataset.
 DATA_FILE = "data/house_prices.csv"
+FIGURES_DIR = "output/figures"
 
 
 def load_data(file_path):
@@ -178,6 +181,184 @@ def display_category_distribution(data):
     print("\nHouse Price Categories:")
     print(data["price_category"].value_counts())
 
+def create_visualisations(data):
+    """
+    Create and save the four visualisations required for Problem 1.
+
+    The generated figures include:
+    - House price category pie chart.
+    - House price category bar chart.
+    - Demand-level price histogram.
+    - Price and demand scatter plot across suburbs.
+
+    Args:
+        data (pandas.DataFrame): Categorised house price dataset.
+    """
+
+    # Ensure the output directory exists before attempting to save figures.
+    Path(FIGURES_DIR).mkdir(parents=True, exist_ok=True)
+
+    category_order = [
+        "Entry Level",
+        "Economical Level",
+        "Middle-Class Level",
+        "Premium Level",
+    ]
+
+    category_counts = (
+        data["price_category"]
+        .value_counts()
+        .reindex(category_order)
+    )
+
+    # -----------------------------------------------------------------------
+    # Pie Chart - House Price Category Distribution
+    # -----------------------------------------------------------------------
+
+    plt.figure(figsize=(8, 6))
+
+    plt.pie(
+        category_counts,
+        labels=category_counts.index,
+        autopct="%1.1f%%",
+        startangle=90,
+    )
+
+    plt.title("House Price Category Distribution")
+    plt.tight_layout()
+
+    plt.savefig(
+        f"{FIGURES_DIR}/price_category_pie_chart.png",
+        dpi=300,
+    )
+
+    plt.close()
+
+    # -----------------------------------------------------------------------
+    # Bar Chart - House Price Distribution by Category
+    # -----------------------------------------------------------------------
+
+    plt.figure(figsize=(9, 6))
+
+    bars = plt.bar(
+    category_counts.index,
+    category_counts.values,
+    )
+
+    plt.bar_label(bars)
+
+    plt.title("House Price Distribution by Category")
+    plt.xlabel("Price Category")
+    plt.ylabel("Number of Houses")
+
+    plt.xticks(rotation=15)
+    plt.tight_layout()
+
+    plt.savefig(
+        f"{FIGURES_DIR}/price_distribution_bar_chart.png",
+        dpi=300,
+    )
+
+    plt.close()
+
+    high_demand_prices = data.loc[
+        data["demand"] == "High",
+        "price",
+    ]
+
+    general_demand_prices = data.loc[
+        data["demand"] == "General",
+        "price",
+    ]
+
+    # -----------------------------------------------------------------------
+    # Histogram - Price Distribution by Demand Level
+    # -----------------------------------------------------------------------
+
+    plt.figure(figsize=(9, 6))
+
+    plt.hist(
+        [high_demand_prices, general_demand_prices],
+        bins=10,
+        label=["High Demand", "General Demand"],
+        alpha=0.7,
+    )
+
+    plt.title("House Price Distribution by Demand Level")
+    plt.xlabel("House Price ($)")
+    plt.gca().xaxis.set_major_formatter(
+    StrMethodFormatter("${x:,.0f}")
+    )
+    plt.ylabel("Number of Houses")
+    plt.legend()
+
+    plt.tight_layout()
+
+    plt.savefig(
+        f"{FIGURES_DIR}/demand_price_histogram.png",
+        dpi=300,
+    )
+
+    plt.close()
+
+    # -----------------------------------------------------------------------
+    # Scatter Plot - House Price and Demand Level Across Suburbs
+    # -----------------------------------------------------------------------
+
+    plt.figure(figsize=(10, 6))
+
+    suburb_order = ["TW", "WM", "HH", "SF", "NL"]
+
+    suburb_names = {
+        "TW": "Toowong",
+        "WM": "Wynnum",
+        "HH": "Highgate Hill",
+        "SF": "Springfield",
+        "NL": "North Lake",
+    }
+
+    # Convert the categorical demand values to numerical positions so they
+    # can be displayed on the scatter plot's y-axis.
+    demand_positions = {
+        "General": 0,
+        "High": 1,
+    }
+
+    for suburb in suburb_order:
+        suburb_data = data[data["suburb"] == suburb]
+
+        y_positions = suburb_data["demand"].map(demand_positions)
+
+        plt.scatter(
+            suburb_data["price"],
+            y_positions,
+            label=suburb_names[suburb],
+            alpha=0.7,
+        )
+
+    plt.title("House Price and Demand Level Across Suburbs")
+    plt.xlabel("House Price ($)")
+    plt.ylabel("Demand Level")
+
+    plt.yticks(
+        [0, 1],
+        ["General Demand", "High Demand"],
+    )
+
+    plt.gca().xaxis.set_major_formatter(
+        StrMethodFormatter("${x:,.0f}")
+    )
+
+    plt.legend(title="Suburb")
+    plt.tight_layout()
+
+    plt.savefig(
+        f"{FIGURES_DIR}/suburb_demand_scatter_plot.png",
+        dpi=300,
+    )
+
+    plt.close()
+
 def main():
     """
     Run the House Price Data Analysis application.
@@ -191,6 +372,8 @@ def main():
 
     data = categorise_house_prices(data)
     display_category_distribution(data)
+
+    create_visualisations(data)
 
 if __name__ == "__main__":
     main()

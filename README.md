@@ -19,6 +19,7 @@ house price data from five Brisbane suburbs.
 - Calculate the percentages of houses below and above the median price
 - Categorise properties into Entry, Economical, Middle-Class, and Premium price levels
 - Display the number of houses in each price category
+- Generate and save the four required data visualisations
 
 ## Dataset
 
@@ -68,6 +69,19 @@ Properties are grouped into four price categories:
 
 The supplied dataset does not contain properties priced exactly at the
 boundary values of $500,000, $800,000, or $1,400,000.
+
+## Generated Visualisations
+
+The application generates four visualisations in `output/figures/`:
+
+- `price_category_pie_chart.png` - Percentage distribution across the four price categories
+- `price_distribution_bar_chart.png` - Number of houses in each price category
+- `demand_price_histogram.png` - Comparison of house price distributions for High and General demand
+- `suburb_demand_scatter_plot.png` - Relationship between house prices and demand levels across suburbs
+
+The bar chart represents house price distribution using the four price
+categories defined in the assignment. The pie chart presents relative
+percentages, while the bar chart presents absolute property counts.
 
 ## Project Structure
 
