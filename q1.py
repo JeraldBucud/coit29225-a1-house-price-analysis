@@ -304,54 +304,63 @@ def create_visualisations(data):
     plt.close()
 
     # -----------------------------------------------------------------------
-    # Scatter Plot - House Price and Demand Level Across Suburbs
+    # Scatter Plot - Price and Demand Across Suburbs
     # -----------------------------------------------------------------------
 
     plt.figure(figsize=(10, 6))
 
+    # Preserve the suburb order used in the assignment dataset.
     suburb_order = ["TW", "WM", "HH", "SF", "NL"]
 
-    suburb_names = {
-        "TW": "Toowong",
-        "WM": "Wynnum",
-        "HH": "Highgate Hill",
-        "SF": "Springfield",
-        "NL": "North Lake",
+    suburb_labels = [
+        "Toowong",
+        "Wynnum",
+        "Highgate Hill",
+        "Springfield",
+        "North Lake",
+    ]
+
+    # Convert suburb codes into numerical positions for the x-axis.
+    suburb_positions = {
+        suburb: index
+        for index, suburb in enumerate(suburb_order)
     }
 
-    # Convert the categorical demand values to numerical positions so they
-    # can be displayed on the scatter plot's y-axis.
-    demand_positions = {
-        "General": 0,
-        "High": 1,
+    # Slightly separate demand categories so overlapping points remain visible.
+    demand_offsets = {
+        "General": -0.08,
+        "High": 0.08,
     }
 
-    for suburb in suburb_order:
-        suburb_data = data[data["suburb"] == suburb]
+    for demand_level in ["General", "High"]:
+        demand_data = data[data["demand"] == demand_level]
 
-        y_positions = suburb_data["demand"].map(demand_positions)
+        x_positions = (
+            demand_data["suburb"].map(suburb_positions)
+            + demand_offsets[demand_level]
+        )
 
         plt.scatter(
-            suburb_data["price"],
-            y_positions,
-            label=suburb_names[suburb],
+            x_positions,
+            demand_data["price"],
+            label=f"{demand_level} Demand",
             alpha=0.7,
         )
 
-    plt.title("House Price and Demand Level Across Suburbs")
-    plt.xlabel("House Price ($)")
-    plt.ylabel("Demand Level")
+    plt.title("House Prices and Demand Levels Across Suburbs")
+    plt.xlabel("Suburb")
+    plt.ylabel("House Price ($)")
 
-    plt.yticks(
-        [0, 1],
-        ["General Demand", "High Demand"],
+    plt.xticks(
+        range(len(suburb_order)),
+        suburb_labels,
     )
 
-    plt.gca().xaxis.set_major_formatter(
+    plt.gca().yaxis.set_major_formatter(
         StrMethodFormatter("${x:,.0f}")
     )
 
-    plt.legend(title="Suburb")
+    plt.legend()
     plt.tight_layout()
 
     plt.savefig(
