@@ -21,9 +21,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import StrMethodFormatter
 
+
 # Path to the supplied house price dataset.
 DATA_FILE = "data/house_prices.csv"
 FIGURES_DIR = "output/figures"
+SORTED_DATA_FILE = "output/sorted_house_prices.csv"
 
 
 def load_data(file_path):
@@ -359,6 +361,47 @@ def create_visualisations(data):
 
     plt.close()
 
+def export_sorted_data(data, statistics):
+    """
+    Sort the house price dataset in ascending order and export it to CSV.
+
+    The exported dataset includes the median, lowest, and highest house
+    prices required by the assignment.
+
+    Args:
+        data (pandas.DataFrame): House price dataset.
+        statistics (dict): Calculated house price statistics.
+
+    Returns:
+        pandas.DataFrame: The sorted dataset that was exported.
+    """
+
+    # Preserve the original dataset structure while creating a separate
+    # DataFrame for the sorted CSV output.
+    sorted_data = (
+        data[["id", "price", "suburb", "demand"]]
+        .sort_values(by="price", ascending=True)
+        .copy()
+    )
+
+    # Add the required summary statistics as numerical columns so they
+    # remain available alongside every record in the exported CSV.
+    sorted_data["median_price"] = statistics["median_price"]
+    sorted_data["lowest_price"] = statistics["lowest_price"]
+    sorted_data["highest_price"] = statistics["highest_price"]
+
+    # Ensure the output directory exists before saving the CSV file.
+    Path(SORTED_DATA_FILE).parent.mkdir(parents=True, exist_ok=True)
+
+    sorted_data.to_csv(
+        SORTED_DATA_FILE,
+        index=False,
+    )
+
+    print(f"\nSorted dataset saved to: {SORTED_DATA_FILE}")
+
+    return sorted_data
+
 def main():
     """
     Run the House Price Data Analysis application.
@@ -374,6 +417,8 @@ def main():
     display_category_distribution(data)
 
     create_visualisations(data)
+
+    export_sorted_data(data, statistics)
 
 if __name__ == "__main__":
     main()
