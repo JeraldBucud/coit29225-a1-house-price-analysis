@@ -17,6 +17,8 @@ house price data from five Brisbane suburbs.
 - Calculate the median house price
 - Calculate the lowest and highest house prices
 - Calculate the percentages of houses below and above the median price
+- Categorise properties into Entry, Economical, Middle-Class, and Premium price levels
+- Display the number of houses in each price category
 
 ## Dataset
 
@@ -54,6 +56,18 @@ house price dataset:
 
 The values are calculated dynamically from the CSV dataset rather than
 being hard-coded in the program.
+
+## House Price Categories
+
+Properties are grouped into four price categories:
+
+- **Entry Level:** Less than $500,000
+- **Economical Level:** Up to $800,000 after the Entry Level range
+- **Middle-Class Level:** Up to $1,400,000 after the Economical Level range
+- **Premium Level:** Above $1,400,000
+
+The supplied dataset does not contain properties priced exactly at the
+boundary values of $500,000, $800,000, or $1,400,000.
 
 ## Project Structure
 

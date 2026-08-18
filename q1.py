@@ -132,7 +132,51 @@ def display_statistics(statistics):
         f"{statistics['above_median_percentage']:.2f}%"
     )
 
+def categorise_price(price):
+    """
+    Categorise a house according to its selling price.
 
+    Args:
+        price (int or float): Selling price of the house.
+
+    Returns:
+        str: The corresponding house price category.
+    """
+
+    if price < 500000:
+        return "Entry Level"
+    elif price <= 800000:
+        return "Economical Level"
+    elif price <= 1400000:
+        return "Middle-Class Level"
+    else:
+        return "Premium Level"
+
+def categorise_house_prices(data):
+    """
+    Add a price category to each house in the dataset.
+
+    Args:
+        data (pandas.DataFrame): House price dataset.
+
+    Returns:
+        pandas.DataFrame: Dataset containing an additional price_category column.
+    """
+
+    data["price_category"] = data["price"].apply(categorise_price)
+
+    return data
+
+def display_category_distribution(data):
+    """
+    Display the number of houses in each price category.
+
+    Args:
+        data (pandas.DataFrame): Categorised house price dataset.
+    """
+
+    print("\nHouse Price Categories:")
+    print(data["price_category"].value_counts())
 
 def main():
     """
@@ -143,9 +187,10 @@ def main():
     inspect_and_validate_data(data)
 
     statistics = calculate_statistics(data)
-
     display_statistics(statistics)
 
+    data = categorise_house_prices(data)
+    display_category_distribution(data)
 
 if __name__ == "__main__":
     main()
