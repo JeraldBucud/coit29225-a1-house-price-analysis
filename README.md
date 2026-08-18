@@ -20,6 +20,8 @@ house price data from five Brisbane suburbs.
 - Categorise properties into Entry, Economical, Middle-Class, and Premium price levels
 - Display the number of houses in each price category
 - Generate and save the four required data visualisations
+- Export the house price dataset sorted by price in ascending order
+- Include the median, lowest, and highest prices in the exported CSV
 
 ## Dataset
 
@@ -82,6 +84,38 @@ The application generates four visualisations in `output/figures/`:
 The bar chart represents house price distribution using the four price
 categories defined in the assignment. The pie chart presents relative
 percentages, while the bar chart presents absolute property counts.
+
+## Data Export
+
+The application generates:
+
+`output/sorted_house_prices.csv`
+
+The exported dataset:
+
+- Contains all 110 original house records
+- Is sorted by house price in ascending order
+- Preserves the original `id`, `price`, `suburb`, and `demand` fields
+- Includes `median_price`, `lowest_price`, and `highest_price` columns
+
+The statistical values are stored as numerical values so the exported
+CSV remains suitable for further analysis.
+
+## Data Export
+
+The application generates:
+
+`output/sorted_house_prices.csv`
+
+The exported dataset:
+
+- Contains all 110 original house records
+- Is sorted by house price in ascending order
+- Preserves the original `id`, `price`, `suburb`, and `demand` fields
+- Includes `median_price`, `lowest_price`, and `highest_price` columns
+
+The summary statistics are stored as numerical values so the exported
+CSV remains suitable for further analysis.
 
 ## Project Structure
 
