@@ -19,13 +19,16 @@ from pathlib import Path
 
 import pandas as pd
 import matplotlib.pyplot as plt
+from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib.ticker import StrMethodFormatter
+
 
 
 # Path to the supplied house price dataset.
 DATA_FILE = "data/house_prices.csv"
 FIGURES_DIR = "output/figures"
 SORTED_DATA_FILE = "output/sorted_house_prices.csv"
+PDF_REPORT_FILE = "output/house_price_technical_report.pdf"
 
 
 def load_data(file_path):
@@ -411,6 +414,91 @@ def export_sorted_data(data, statistics):
 
     return sorted_data
 
+def generate_pdf_report(data, statistics):
+    """
+    Generate the technical PDF report required for Problem 1.
+
+    The report contains the calculated house price statistics and the
+    four required visualisations.
+
+    Args:
+        data (pandas.DataFrame): Analysed house price dataset.
+        statistics (dict): Calculated house price statistics.
+    """
+
+    # Ensure the output directory exists before creating the report.
+    Path(PDF_REPORT_FILE).parent.mkdir(parents=True, exist_ok=True)
+
+    figure_files = [
+        f"{FIGURES_DIR}/price_category_pie_chart.png",
+        f"{FIGURES_DIR}/price_distribution_bar_chart.png",
+        f"{FIGURES_DIR}/demand_price_histogram.png",
+        f"{FIGURES_DIR}/suburb_demand_scatter_plot.png",
+    ]
+
+    with PdfPages(PDF_REPORT_FILE) as pdf:
+        # -------------------------------------------------------------------
+        # Page 1 - Statistical Summary
+        # -------------------------------------------------------------------
+
+        figure = plt.figure(figsize=(8.27, 11.69))
+        axis = figure.add_subplot(111)
+        axis.axis("off")
+
+        figure.suptitle(
+            "House Price Data Analysis - Technical Report",
+            fontsize=18,
+            fontweight="bold",
+            y=0.95,
+        )
+
+        summary_text = (
+            "Dataset Summary\n\n"
+            f"Total houses: {len(data)}\n"
+            f"Median house price: ${statistics['median_price']:,.2f}\n"
+            f"Lowest house price: ${statistics['lowest_price']:,.2f}\n"
+            f"Highest house price: ${statistics['highest_price']:,.2f}\n"
+            f"Percentage below median: "
+            f"{statistics['below_median_percentage']:.2f}%\n"
+            f"Percentage above median: "
+            f"{statistics['above_median_percentage']:.2f}%"
+        )
+
+        axis.text(
+            0.10,
+            0.80,
+            summary_text,
+            fontsize=13,
+            verticalalignment="top",
+            linespacing=1.8,
+        )
+
+        pdf.savefig(figure)
+        plt.close(figure)
+
+        # -------------------------------------------------------------------
+        # Pages 2-5 - Required Visualisations
+        # -------------------------------------------------------------------
+
+        for file_path in figure_files:
+            image = plt.imread(file_path)
+
+            figure, axis = plt.subplots(figsize=(11.69, 8.27))
+
+            axis.imshow(image)
+            axis.axis("off")
+
+            figure.tight_layout()
+
+            pdf.savefig(
+                figure,
+                bbox_inches="tight",
+            )
+
+            plt.close(figure)
+
+    print(f"\nTechnical PDF report saved to: {PDF_REPORT_FILE}")
+
 def main():
     """
     Run the House Price Data Analysis application.
@@ -428,6 +516,7 @@ def main():
     create_visualisations(data)
 
     export_sorted_data(data, statistics)
+    generate_pdf_report(data, statistics)
 
 if __name__ == "__main__":
     main()
