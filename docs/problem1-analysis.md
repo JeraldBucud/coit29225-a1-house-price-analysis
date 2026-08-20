@@ -1,14 +1,16 @@
 # Problem 1 Analysis
 
-This document records the analysis findings for COIT29225 Assignment 1,
-Problem 1. The answers are based on the supplied house price dataset,
-calculated statistics, and generated visualisations.
+This document records the findings for COIT29225 Assignment 1, Problem 1.
+
+The conclusions are based on statistics and supporting analysis calculated
+directly by `q1.py`, together with the visualisations generated from the
+supplied house price dataset.
 
 ## Question 1: Which suburb has the most houses priced above the median?
 
 The overall median house price is **$915,000**.
 
-The number of houses priced above the median in each suburb is:
+The number of houses priced above the median by suburb is:
 
 | Suburb | Houses Above Median |
 |---|---:|
@@ -27,7 +29,7 @@ Toowong is a close second with 18 properties above the median.
 
 The house price distribution is **positively skewed (right-skewed)**.
 
-The overall descriptive statistics are:
+The calculated statistics are:
 
 | Statistic | Value |
 |---|---:|
@@ -40,121 +42,112 @@ The overall descriptive statistics are:
 | Maximum | $3,200,000.00 |
 | Skewness | 1.194 |
 
-The mean is higher than the median, which is consistent with a
-right-skewed distribution. The histogram also shows a long upper tail,
-with a relatively small number of expensive properties extending beyond
-$2 million and up to $3.2 million.
+The mean is higher than the median, while the positive skewness value of
+1.194 indicates that the distribution has a longer upper-price tail.
 
-The price-category visualisations show that the largest category is
-**Middle-Class Level**, containing 49 houses or approximately 44.5% of
-the dataset. The remaining properties are distributed across Economical
-Level, Premium Level, and Entry Level categories.
+The generated histogram also shows a relatively small number of expensive
+properties extending above $2 million, with the most expensive property
+priced at $3.2 million.
 
-There are also differences between the two demand groups:
+The price-category distribution is:
 
-| Demand Level | Count | Mean Price | Median Price | Minimum | Maximum |
+- Entry Level: 15 properties
+- Economical Level: 26 properties
+- Middle-Class Level: 49 properties
+- Premium Level: 20 properties
+
+The Middle-Class Level is the largest category, representing approximately
+44.5% of the dataset.
+
+The demand groups also show different price characteristics:
+
+| Demand | Count | Mean | Median | Minimum | Maximum |
 |---|---:|---:|---:|---:|---:|
 | General | 54 | $1,119,026.43 | $985,000 | $50,005 | $3,200,000 |
 | High | 56 | $894,534.21 | $890,000 | $99,000 | $2,000,000 |
 
 In this dataset, General Demand properties have both a higher mean and
-median price than High Demand properties. Therefore, a High Demand label
-does not necessarily indicate a more expensive property.
+median price than High Demand properties. Therefore, the High Demand
+classification does not necessarily indicate a higher-priced property.
 
-The suburb scatter plot also demonstrates that house prices vary
-considerably between and within suburbs. Highgate Hill and Toowong contain
-several of the higher-priced properties, while other suburbs have a more
-concentrated price range.
+Overall, the data shows substantial price variation, a long upper-price
+tail, and noticeable differences between suburbs and demand groups.
 
-Overall, the dataset contains substantial price variation, a long
-upper-price tail, and identifiable differences between suburb and demand
-groups.
+## Question 3: Can the Distribution Be Modelled Accurately by a Single Gaussian Kernel?
 
-## Question 3: Can the distribution be accurately modelled by a single Gaussian kernel?
-
-A single Gaussian distribution would **not provide an accurate model of
-the house price distribution**.
+A single Gaussian model would **not accurately represent the observed
+house price distribution**.
 
 A Gaussian distribution is approximately symmetric around its mean.
-However, the observed house price data is positively skewed, with a
-skewness value of approximately **1.194**.
+However, the house price distribution has a positive skewness value of
+**1.194**, indicating a longer right-hand tail.
 
-The mean house price of approximately **$1.005 million** is noticeably
-higher than the median of **$915,000**, which is another indication that
-high-value properties are pulling the distribution toward the right.
+The overall mean price of approximately **$1.005 million** is also higher
+than the median of **$915,000**, showing that relatively expensive
+properties are pulling the mean upward.
 
-The dataset also contains a long upper tail, including properties priced
-above $2 million and a maximum price of $3.2 million. These high-price
-observations make the distribution less symmetric than would be expected
-under a single Gaussian model.
+The dataset includes properties above $2 million and reaches a maximum of
+$3.2 million, further contributing to the asymmetric upper tail.
 
-In addition, the dataset combines properties from different suburbs and
-demand categories. These groups have different price characteristics,
-meaning the overall data may represent a mixture of several underlying
-market segments rather than one homogeneous population.
+In addition, the observations come from multiple suburbs and demand
+categories with different price characteristics. The overall distribution
+therefore represents several market segments rather than one completely
+homogeneous population.
 
-Therefore, a single Gaussian model would oversimplify the distribution.
-A model capable of representing skewness or multiple groups, such as a
-Gaussian mixture model or a non-parametric kernel density estimate, may
-provide a better representation of the observed house prices.
+For these reasons, a single Gaussian model would oversimplify the observed
+distribution. A model capable of representing skewness or multiple market
+segments may provide a better representation.
 
 ## Question 4: Business Problem and Real-Estate Application
 
 ### Business Problem
 
-A real-estate agency needs to determine **which suburb, price range, and
+A real-estate agency needs to determine which suburb, price range, and
 demand segments should receive the greatest marketing attention and how
-properties in those segments should be positioned and priced**.
+properties in those segments should be positioned.
 
-Treating all properties in the same way could lead to inefficient
-marketing expenditure because the dataset shows substantial differences
-in price distributions across suburbs and demand categories.
+Treating every property and suburb using the same marketing strategy may
+lead to inefficient advertising expenditure because the analysis shows
+substantial differences in house prices and market characteristics.
 
-### Proposed Solution
+### How the Analysis Could Help
 
-The agency could segment its property portfolio using:
+The agency could segment properties according to:
 
 - Suburb
-- House price
+- Price
 - Price category
 - Demand level
-- Median and average prices within each market segment
+- Typical price statistics within each segment
 
-The analysis shows, for example, that Highgate Hill has the largest number
-of properties above the overall median price. This could indicate a strong
-higher-value property segment within that suburb.
+For example, Highgate Hill contains the largest number of houses priced
+above the overall median, indicating a substantial higher-value segment
+within that suburb.
 
-The analysis also shows that General Demand properties have a higher mean
-and median price than High Demand properties in this dataset. Therefore,
-the agency should not assume that a High Demand classification
-automatically represents a premium-priced property.
+The analysis also demonstrates that High Demand properties are not
+automatically the most expensive. General Demand properties have higher
+mean and median prices in this dataset.
 
-### Benefits to Marketing
+### Marketing Benefits
 
-The agency could use this information to:
+The agency could use these findings to:
 
-- Target premium-property advertising toward suburbs containing more
-  high-value properties.
-- Create different campaigns for Entry, Economical, Middle-Class, and
-  Premium property segments.
-- Allocate advertising budgets toward suburb and price combinations that
-  are most relevant to the target customer.
-- Match marketing messages to the characteristics of each property
-  segment.
-- Avoid using demand level alone as an indicator of property value.
+- Target premium advertising toward suburbs containing more high-value properties.
+- Develop different campaigns for Entry, Economical, Middle-Class, and Premium properties.
+- Allocate advertising budgets according to suburb and price segment.
+- Tailor marketing messages to different groups of prospective buyers.
+- Avoid relying on demand classification alone as an indication of property value.
 
-### Benefits to Strategic Planning
+### Strategic Planning Benefits
 
-The agency could also use the analysis to:
+The agency could also:
 
-- Identify suburbs with stronger higher-priced market segments.
-- Support pricing and listing strategies using suburb-level statistics.
-- Determine which property categories make up the largest share of the
-  current market.
-- Monitor changes in demand and price distributions over time.
-- Improve decisions about where to focus future listings and sales
-  resources.
+- Identify suburbs with stronger higher-value property segments.
+- Support listing and pricing decisions with suburb-level data.
+- Determine which price categories dominate the current portfolio.
+- Monitor changes in price and demand patterns over time.
+- Allocate sales and marketing resources toward more relevant market segments.
 
-Using data-driven segmentation would allow the agency to make marketing
-and strategic decisions based on observed market patterns rather than
-treating all properties and suburbs as equivalent.
+Using data-driven segmentation would help the agency make marketing and
+strategic decisions based on observed property-market patterns rather than
+treating all listings as equivalent.

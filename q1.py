@@ -14,6 +14,7 @@ The program will:
 - Generate the required data visualisations.
 - Export the sorted house price dataset.
 - Generate a technical PDF report.
+- Calculate supporting findings for the required analysis questions.
 """
 from pathlib import Path
 
@@ -29,6 +30,14 @@ DATA_FILE = "data/house_prices.csv"
 FIGURES_DIR = "output/figures"
 SORTED_DATA_FILE = "output/sorted_house_prices.csv"
 PDF_REPORT_FILE = "output/house_price_technical_report.pdf"
+
+SUBURB_NAMES = {
+    "TW": "Toowong",
+    "WM": "Wynnum",
+    "HH": "Highgate Hill",
+    "SF": "Springfield",
+    "NL": "North Lake",
+}
 
 
 def load_data(file_path):
@@ -316,11 +325,8 @@ def create_visualisations(data):
     suburb_order = ["TW", "WM", "HH", "SF", "NL"]
 
     suburb_labels = [
-        "Toowong",
-        "Wynnum",
-        "Highgate Hill",
-        "Springfield",
-        "North Lake",
+        SUBURB_NAMES[suburb]
+        for suburb in suburb_order
     ]
 
     # Convert suburb codes into numerical positions for the x-axis.
@@ -499,6 +505,111 @@ def generate_pdf_report(data, statistics):
 
     print(f"\nTechnical PDF report saved to: {PDF_REPORT_FILE}")
 
+
+def calculate_analysis_findings(data, statistics):
+    """
+    Calculate supporting findings for the Problem 1 analysis questions.
+
+    The results provide quantitative evidence for analysing suburb price
+    patterns, the overall price distribution, and differences between
+    demand levels.
+
+    Args:
+        data (pandas.DataFrame): Analysed house price dataset.
+        statistics (dict): Previously calculated house price statistics.
+
+    Returns:
+        dict: Supporting findings used for the written analysis.
+    """
+
+    prices = data["price"]
+    median_price = statistics["median_price"]
+
+    # Select only houses priced above the overall median, then count
+    # how many occur in each suburb.
+    above_median_by_suburb = (
+        data[data["price"] > median_price]
+        .groupby("suburb")
+        .size()
+        .sort_values(ascending=False)
+    )
+
+    # Identify the suburb code with the largest number of houses
+    # priced above the overall median.
+    top_suburb_code = above_median_by_suburb.idxmax()
+    top_suburb_count = int(above_median_by_suburb.max())
+
+    # Calculate descriptive statistics that help explain the shape
+    # and spread of the overall house price distribution.
+    mean_price = prices.mean()
+    standard_deviation = prices.std()
+    first_quartile = prices.quantile(0.25)
+    third_quartile = prices.quantile(0.75)
+    skewness = prices.skew()
+
+    # Compare price statistics between General and High demand groups.
+    demand_summary = (
+        data.groupby("demand")["price"]
+        .agg(["count", "mean", "median", "min", "max"])
+        .round(2)
+    )
+
+    findings = {
+        "above_median_by_suburb": above_median_by_suburb,
+        "top_suburb_code": top_suburb_code,
+        "top_suburb_name": SUBURB_NAMES[top_suburb_code],
+        "top_suburb_count": top_suburb_count,
+        "mean_price": mean_price,
+        "standard_deviation": standard_deviation,
+        "first_quartile": first_quartile,
+        "third_quartile": third_quartile,
+        "skewness": skewness,
+        "demand_summary": demand_summary,
+    }
+
+    return findings
+
+def display_analysis_findings(findings):
+    """
+    Display supporting findings for the Problem 1 analysis questions.
+
+    Args:
+        findings (dict): Calculated supporting analysis findings.
+    """
+
+    print("\nAdditional Analysis Findings:")
+
+    print("\nHouses above the overall median by suburb:")
+
+    for suburb_code, count in findings["above_median_by_suburb"].items():
+        suburb_name = SUBURB_NAMES[suburb_code]
+        print(f"{suburb_name}: {count}")
+
+    print(
+        "\nSuburb with the most houses above the median: "
+        f"{findings['top_suburb_name']} "
+        f"({findings['top_suburb_count']} houses)"
+    )
+
+    print("\nOverall Price Distribution:")
+    print(f"Mean price: ${findings['mean_price']:,.2f}")
+    print(
+        f"Standard deviation: "
+        f"${findings['standard_deviation']:,.2f}"
+    )
+    print(
+        f"First quartile (Q1): "
+        f"${findings['first_quartile']:,.2f}"
+    )
+    print(
+        f"Third quartile (Q3): "
+        f"${findings['third_quartile']:,.2f}"
+    )
+    print(f"Skewness: {findings['skewness']:.3f}")
+
+    print("\nPrice Statistics by Demand Level:")
+    print(findings["demand_summary"])
+
 def main():
     """
     Run the House Price Data Analysis application.
@@ -509,6 +620,13 @@ def main():
 
     statistics = calculate_statistics(data)
     display_statistics(statistics)
+
+    analysis_findings = calculate_analysis_findings(
+    data,
+    statistics,
+    )
+
+    display_analysis_findings(analysis_findings)
 
     data = categorise_house_prices(data)
     display_category_distribution(data)
