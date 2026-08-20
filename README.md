@@ -117,6 +117,25 @@ The exported dataset:
 The summary statistics are stored as numerical values so the exported
 CSV remains suitable for further analysis.
 
+
+## Technical PDF Report
+
+The application generates:
+
+`output/house_price_technical_report.pdf`
+
+The technical report contains:
+
+1. A statistical summary of the house price dataset
+2. House price category pie chart
+3. House price distribution bar chart
+4. High and General demand price histogram
+5. House price and demand scatter plot across suburbs
+
+The statistical values and figures are generated dynamically from the
+supplied dataset.
+
+
 ## Project Structure
 
 ```text
