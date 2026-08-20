@@ -22,6 +22,11 @@ house price data from five Brisbane suburbs.
 - Generate and save the four required data visualisations
 - Export the house price dataset sorted by price in ascending order
 - Include the median, lowest, and highest prices in the exported CSV
+- Calculate supporting statistical findings for the Problem 1 analysis questions
+- Compare houses above the median across suburbs
+- Calculate distribution measures including mean, quartiles, standard deviation, and skewness
+- Compare house price statistics between General and High demand properties
+- Generate the required technical PDF report
 
 ## Dataset
 
@@ -59,6 +64,24 @@ house price dataset:
 
 The values are calculated dynamically from the CSV dataset rather than
 being hard-coded in the program.
+
+## Supporting Analysis
+
+The application also calculates supporting statistical findings for the
+Problem 1 analysis questions, including:
+
+- Houses priced above the overall median by suburb
+- Identification of the suburb with the most above-median properties
+- Mean house price
+- Standard deviation
+- First and third quartiles
+- Price distribution skewness
+- Price statistics for General and High demand properties
+
+These results provide quantitative evidence for the written analysis
+rather than relying only on visual interpretation of the generated charts.
+
+
 
 ## House Price Categories
 
@@ -101,32 +124,50 @@ The exported dataset:
 The statistical values are stored as numerical values so the exported
 CSV remains suitable for further analysis.
 
-## Data Export
+
+
+## Technical PDF Report
 
 The application generates:
 
-`output/sorted_house_prices.csv`
+`output/house_price_technical_report.pdf`
 
-The exported dataset:
+The technical report contains:
 
-- Contains all 110 original house records
-- Is sorted by house price in ascending order
-- Preserves the original `id`, `price`, `suburb`, and `demand` fields
-- Includes `median_price`, `lowest_price`, and `highest_price` columns
+1. A statistical summary of the house price dataset
+2. House price category pie chart
+3. House price distribution bar chart
+4. High and General demand price histogram
+5. House price and demand scatter plot across suburbs
 
-The summary statistics are stored as numerical values so the exported
-CSV remains suitable for further analysis.
+The statistical values and figures are generated dynamically from the
+supplied dataset.
 
-## Project Structure
+## Problem 1 Analysis
 
-```text
+The detailed findings and written responses to the four required Problem 1
+analysis questions are documented in:
+
+`docs/problem1-analysis.md`
+
+The conclusions are based on statistics and supporting analysis calculated
+directly by `q1.py`, together with the generated visualisations.
+
+
 coit29225-a1-house-price-analysis/
 ├── data/
 │   └── house_prices.csv
+├── docs/
+│   └── problem1-analysis.md
 ├── output/
-│   └── figures/
+│   ├── figures/
+│   │   ├── price_category_pie_chart.png
+│   │   ├── price_distribution_bar_chart.png
+│   │   ├── demand_price_histogram.png
+│   │   └── suburb_demand_scatter_plot.png
+│   ├── sorted_house_prices.csv
+│   └── house_price_technical_report.pdf
 ├── q1.py
 ├── requirements.txt
 ├── README.md
 └── .gitignore
-```
