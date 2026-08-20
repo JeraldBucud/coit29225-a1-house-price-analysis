@@ -154,6 +154,9 @@ The conclusions are based on statistics and supporting analysis calculated
 directly by `q1.py`, together with the generated visualisations.
 
 
+## Project Structure
+
+```text
 coit29225-a1-house-price-analysis/
 ├── data/
 │   └── house_prices.csv
@@ -171,3 +174,4 @@ coit29225-a1-house-price-analysis/
 ├── requirements.txt
 ├── README.md
 └── .gitignore
+```
