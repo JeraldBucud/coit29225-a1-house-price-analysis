@@ -129,6 +129,7 @@ def calculate_statistics(data):
 
     return statistics
 
+
 def display_statistics(statistics):
     """
     Display the calculated house price statistics in a readable format.
@@ -148,6 +149,7 @@ def display_statistics(statistics):
         f"Percentage above median: "
         f"{statistics['above_median_percentage']:.2f}%"
     )
+
 
 def categorise_price(price):
     """
@@ -169,6 +171,7 @@ def categorise_price(price):
     else:
         return "Premium Level"
 
+
 def categorise_house_prices(data):
     """
     Add a price category to each house in the dataset.
@@ -184,6 +187,7 @@ def categorise_house_prices(data):
 
     return data
 
+
 def display_category_distribution(data):
     """
     Display the number of houses in each price category.
@@ -194,6 +198,7 @@ def display_category_distribution(data):
 
     print("\nHouse Price Categories:")
     print(data["price_category"].value_counts())
+
 
 def create_visualisations(data):
     """
@@ -255,8 +260,8 @@ def create_visualisations(data):
     plt.figure(figsize=(9, 6))
 
     bars = plt.bar(
-    category_counts.index,
-    category_counts.values,
+        category_counts.index,
+        category_counts.values,
     )
 
     plt.bar_label(bars)
@@ -301,7 +306,7 @@ def create_visualisations(data):
     plt.title("House Price Distribution by Demand Level")
     plt.xlabel("House Price ($)")
     plt.gca().xaxis.set_major_formatter(
-    StrMethodFormatter("${x:,.0f}")
+        StrMethodFormatter("${x:,.0f}")
     )
     plt.ylabel("Number of Houses")
     plt.legend()
@@ -379,6 +384,7 @@ def create_visualisations(data):
 
     plt.close()
 
+
 def export_sorted_data(data, statistics):
     """
     Sort the house price dataset in ascending order and export it to CSV.
@@ -419,6 +425,7 @@ def export_sorted_data(data, statistics):
     print(f"\nSorted dataset saved to: {SORTED_DATA_FILE}")
 
     return sorted_data
+
 
 def generate_pdf_report(data, statistics):
     """
@@ -569,6 +576,7 @@ def calculate_analysis_findings(data, statistics):
 
     return findings
 
+
 def display_analysis_findings(findings):
     """
     Display supporting findings for the Problem 1 analysis questions.
@@ -610,6 +618,7 @@ def display_analysis_findings(findings):
     print("\nPrice Statistics by Demand Level:")
     print(findings["demand_summary"])
 
+
 def main():
     """
     Run the House Price Data Analysis application.
@@ -622,8 +631,8 @@ def main():
     display_statistics(statistics)
 
     analysis_findings = calculate_analysis_findings(
-    data,
-    statistics,
+        data,
+        statistics,
     )
 
     display_analysis_findings(analysis_findings)
@@ -635,6 +644,7 @@ def main():
 
     export_sorted_data(data, statistics)
     generate_pdf_report(data, statistics)
+
 
 if __name__ == "__main__":
     main()
